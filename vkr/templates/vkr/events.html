@@ -1,0 +1,22 @@
+{% extends "vkr/base.html" %}
+{% block content %}
+    {% comment %} <div class="content-section">
+        {% if events %}
+            <h3>Текущие мериприятия</h3> 
+        {% else %}
+                В данный момент нет подходящих мериприятий
+        {% endif %}
+    </div> {% endcomment %}
+    {% for event in events %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                <small class="text-muted">{{ event.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <h2>{{ event.title }}</h2>
+                <p class="article-content">{{ event.content }}</p>
+                <a class="article-title" href="{{ event.id }}" style="float-left"> Записаться </a> {% comment %} TODO style {% endcomment %}
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
