@@ -14,7 +14,7 @@
      <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
     {% if title %}
-        <title>BusinessUnityHub{{ title }}</title>
+        <title>{{ title }}</title>
     {% else %}
         <title>BusinessUnityHub</title>
     {% endif %}
@@ -23,7 +23,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'vkr-home' %}"><i class='bx bxs-rocket bx-tada-hover'></i> BusinessUnityHub</a>
+          <a class="navbar-brand mr-4" href="{% url 'vkr-home' %}"> BusinessUnityHub</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -65,7 +65,7 @@
         	            {% endfor %}
             {% endif %}
         </div>
-        {% block content %}{% endblock %}
+        {% comment %} {% block content %}{% endblock %} {% endcomment %}
         {% comment %} <div class="col-md-4">
           <div class="content-section">
             <h3>Разделы</h3>
@@ -80,7 +80,7 @@
           </div>
         </div> {% endcomment %}
       </div>
-
+      {% block content %}{% endblock %}
     </main>
     <!-- Футер закреплен внизу, независимо от количества постов на странице -->
     <footer class="text-center bg-dark">

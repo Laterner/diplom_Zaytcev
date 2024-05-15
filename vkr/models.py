@@ -27,3 +27,9 @@ class Event (models.Model):
 
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'ev': self.ev})
+    
+class UserSubscribe (models.Model):
+    user_id = models.IntegerField(primary_key=True)
+    # username = models.CharField(default='', max_length=150)
+    purchase_date = models.DateTimeField(default=timezone.now)
+    valid_until = models.DateTimeField(default=None)

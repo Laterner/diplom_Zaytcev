@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -8,8 +8,10 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post, Event
+from .models import Post, Event, UserSubscribe
+from django.contrib.auth.decorators import login_required
 
+from datetime import datetime, timedelta
 
 def home(request):
     context = {
@@ -86,3 +88,40 @@ def about(request):
 
 def subs(request):
     return render(request, 'vkr/subscription-sale.html')
+
+@login_required
+def active_sub(request):
+    sub_types = {
+        'start':91,
+        'middle':182,
+        'pro':365,
+    }
+
+    sub_type = request.GET.get('sub_type')
+    if sub_type == None:
+        return HttpResponse('incorrect request')
+    
+    days = sub_types.get(sub_type)
+    if days == None:
+        return HttpResponse('incorrect type')
+    
+    user_id = request.user.id
+    username = request.user.username
+    
+    if user_id == None or username == None:
+        return HttpResponse('incorrect user')
+    
+    try:
+        if current_sub := UserSubscribe.objects.get(user_id=user_id):
+            return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until}) <a href="/subs">Вернуться</a>')
+    except:
+        pass
+    
+    purchase_date = datetime.today()
+    valid_until = datetime.today() + timedelta(days=days)
+    UserSubscribe.objects.create(user_id=user_id, purchase_date=purchase_date, valid_until=valid_until)
+    return HttpResponse(f'Оплата прошла успешно! <a href="/subs">Вернуться</a>') # TODO Добавить страницу оплаты
+
+def view_all_subs(request):
+    subbers = UserSubscribe.objects.all().order_by('purchase_date')
+    return render(request, 'vkr/subbers.html', {'subbers': subbers})

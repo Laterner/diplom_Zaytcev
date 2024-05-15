@@ -1,0 +1,12 @@
+{% extends "vkr/base.html" %}
+{% block content %}
+    {% for sub in subbers %}
+        <article class="media content-section">
+            <div class="media-body">
+                <p class="text-muted">Дата покупки: {{ sub.purchase_date|date:"F d, Y" }}</p> 
+                <p class="text-muted">Действует до: {{ sub.valid_until|date:"F d, Y" }}</p>
+                <p>Id пользователя: {{ sub.user_id }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

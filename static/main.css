@@ -17,6 +17,16 @@ body {
   background-attachment: fixed;
 }
 
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
 }
@@ -43,10 +53,10 @@ ul {
 
 .content-section {
   background: #ffffff;
-  padding: 10px 20px;
+  padding: 30px 20px;
   border: 1px solid #dddddd;
   border-radius: 6px;
-  margin-bottom: 20px;
+  margin: 20px auto;
 }
 
 .article-title {
