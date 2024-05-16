@@ -1,10 +1,8 @@
 {% extends "vkr/base.html" %}
 {% csrf_token %}
 {% block content %}
-    <h2>Вы вышли из своей учетной записи</h2>
     <div class="content-section">
-        <small class="text-muted">
-            <a href="{% url 'login' %}">Войти</a>
-        </small>
+        <h1>Вы вышли из своей учетной записи</h1>
     </div>
+    <meta http-equiv="refresh" content="0; url=/login" />
 {% endblock content %}
