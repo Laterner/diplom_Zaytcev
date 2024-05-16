@@ -38,11 +38,13 @@
     }
 </style>
 
-    <div class="content-section">
-        {% if not events %}
+    
+    {% if not events %}
+        <div class="content-section">
             В данный момент нет подходящих мериприятий
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
+    
     {% for event in events %}
         <article class="media content-section">
             <div class="media-body">
