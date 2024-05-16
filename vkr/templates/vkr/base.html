@@ -33,6 +33,10 @@
               <a class="nav-item nav-link" href="{% url 'vkr-about' %}">О нас</a>
               <a class="nav-item nav-link" href="{% url 'vkr-events' %}">Мероприятия</a>
               <a class="nav-item nav-link" href="{% url 'vkr-subs' %}">Абонементы</a>
+
+              {% if user.is_superuser %}
+                <a class="nav-item nav-link" href="{% url 'vkr-admin_control' %}">Админка</a>
+              {% endif %}
             </div>
             <!-- Правая часть навигационной панели -->
             <div class="navbar-nav">

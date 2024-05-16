@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -13,12 +13,15 @@ from django.contrib.auth.decorators import login_required
 
 from datetime import datetime, timedelta
 
+from django.http import Http404
+
 
 def home(request):
     context = {
         'posts': Post.objects.all()
     }
     return render(request, 'vkr/home.html', context)
+
 
 class EventListView(ListView):
     model = Event
@@ -57,6 +60,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+class EventCreateView(LoginRequiredMixin, CreateView):
+    model = Event
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        # form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -133,7 +143,12 @@ def view_event_members(request):
 @login_required
 def enjoy_event(request, event_id):
     user_id = request.user.id
-
+    
+    if request.user.is_authenticated:
+        pass
+    else:
+        return HttpResponse('Для записи необходимо авторизоваться')
+    
     try:
       if current_event := Event.objects.get(id=event_id):
             try:
@@ -148,3 +163,9 @@ def enjoy_event(request, event_id):
       return HttpResponse('Такого мероприятия нет')
 
     return HttpResponse('Вы успешно записались')
+
+@login_required
+def admin_control(request):
+    if request.user.is_superuser:
+        return render(request, 'vkr/admin_urls.html')
+    else: redirect('/')
