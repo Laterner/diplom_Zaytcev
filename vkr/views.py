@@ -15,7 +15,6 @@ from datetime import datetime, timedelta
 
 from django.http import Http404
 
-
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -82,7 +81,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['title', 'content']
 
     def form_valid(self, form):
-        # form.instance.author = self.request.user
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
@@ -140,8 +139,8 @@ def view_event_members(request):
                 'event_id': el.event_id,
                 'enjoy_date': el.enjoy_date,
                 'event_name': Event.objects.get(id=el.event_id).title, 
-                'event_member': User.objects.get(id=el.user_id).username
-                })
+                'user_prof': el.user_prof,
+            })
         except:
             pass
         
