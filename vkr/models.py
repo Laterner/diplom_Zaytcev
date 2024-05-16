@@ -21,12 +21,13 @@ class Event (models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
+    event_date = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event-detail', kwargs={'ev': self.pk})
+        return reverse('event-detail', kwargs={'pk': self.pk})
 
 class EventMembers(models.Model):
     event_id = models.IntegerField(primary_key=True)

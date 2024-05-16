@@ -1,11 +1,11 @@
 {% extends "vkr/base.html" %}
 {% block content %}
-    {% for member in members %}
+    {% for event in event_pack %}
         <article class="media content-section">
             <div class="media-body">
-                <p class="text-muted">Дата покупки: {{ member.enjoy_date|date:"F d, Y" }}</p> 
-                <p>Id эвента: {{ member.event_id }}</p>
-                <p>Id пользователя: {{ member.user_id }}</p>
+                <p class="text-muted">Дата присоединения: {{ event.enjoy_date|date:"F d, Y" }}</p> 
+                <p>Название мероприятия: {{ event.event_name }}</p>
+                <p>Имя пользователя: {{ event.event_member }}</p>
             </div>
         </article>
     {% endfor %}

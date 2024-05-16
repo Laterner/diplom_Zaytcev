@@ -28,8 +28,19 @@ class EventListView(ListView):
     template_name = 'vkr/events.html'  
     context_object_name = 'events'
     ordering = ['-date_posted']
-    paginate_by = 5
+    # paginate_by = 5
 
+class EventDetailView(DetailView):
+    model = Event
+
+class EventCreateView(LoginRequiredMixin, CreateView):
+    model = Event
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        # form.instance.author = self.request.user
+        return super().form_valid(form)
+    
 class PostListView(ListView):
     model = Post
     template_name = 'vkr/home.html'  
@@ -60,13 +71,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class EventCreateView(LoginRequiredMixin, CreateView):
-    model = Event
-    fields = ['title', 'content']
-
-    def form_valid(self, form):
-        # form.instance.author = self.request.user
-        return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -95,12 +99,39 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request):
-    return render(request, 'vkr/about.html', {'title': 'О клубе Python Bites'})
+    return render(request, 'vkr/about.html', {'title': 'О нашей организации'})
 
 def subs(request):
     return render(request, 'vkr/subscription-sale.html')
 
+
 @login_required
+def admin_control(request):
+    if request.user.is_superuser:
+        return render(request, 'vkr/admin_urls.html')
+    else: redirect('/')
+
+
+def view_all_subs(request):
+    subbers = UserSubscribe.objects.all().order_by('purchase_date')
+    return render(request, 'vkr/subbers.html', {'subbers': subbers})
+
+def view_event_members(request):
+    members = EventMembers.objects.all().order_by('enjoy_date')
+    event_pack = []
+    
+    for el in members:
+        event_pack.append({
+            'event_id': el.event_id,
+            'enjoy_date': el.enjoy_date,
+            'event_name': Event.objects.get(id=el.event_id).title, 
+            'event_member': User.objects.get(id=el.user_id).username
+            })
+        
+    return render(request, 'vkr/event_members.html', {'event_pack': event_pack})
+
+
+""" API links """
 def active_sub(request, sub_type):
     sub_types = {
         'start':91,
@@ -132,40 +163,22 @@ def active_sub(request, sub_type):
     UserSubscribe.objects.create(user_id=user_id, purchase_date=purchase_date, valid_until=valid_until)
     return HttpResponse(f'Оплата прошла успешно!') # TODO Добавить страницу оплаты
 
-def view_all_subs(request):
-    subbers = UserSubscribe.objects.all().order_by('purchase_date')
-    return render(request, 'vkr/subbers.html', {'subbers': subbers})
-
-def view_event_members(request):
-    members = EventMembers.objects.all().order_by('enjoy_date')
-    return render(request, 'vkr/subbers.html', {'members': members})
-
-@login_required
 def enjoy_event(request, event_id):
     user_id = request.user.id
     
-    if request.user.is_authenticated:
-        pass
-    else:
+    if not request.user.is_authenticated:
         return HttpResponse('Для записи необходимо авторизоваться')
-    
-    try:
-      if current_event := Event.objects.get(id=event_id):
-            try:
-                if user := EventMembers.objects.get(user_id=user_id):
-                    return HttpResponse('Вы уже записаны на данное мероприятие')
-            except:
-                pass
-            
-            em = EventMembers(event_id=event_id, user_id=user_id)
-            em.save()
-    except:
-      return HttpResponse('Такого мероприятия нет')
+
+    if not UserSubscribe.objects.filter(user_id=user_id).exists():
+        return HttpResponse('Сначала купите подписку')
+       
+    if Event.objects.filter(id=event_id).exists():
+        if EventMembers.objects.filter(event_id=event_id, user_id=user_id).exists():
+                return HttpResponse('Вы уже записаны на данное мероприятие')
+        
+        em = EventMembers(event_id=event_id, user_id=user_id)
+        em.save()
+    else:
+        return HttpResponse('Такого мероприятия нет')
 
     return HttpResponse('Вы успешно записались')
-
-@login_required
-def admin_control(request):
-    if request.user.is_superuser:
-        return render(request, 'vkr/admin_urls.html')
-    else: redirect('/')
