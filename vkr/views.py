@@ -35,7 +35,12 @@ class EventDetailView(DetailView):
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
-    fields = ['title', 'content']
+    fields = [
+        'title', 
+        'content', 
+        'event_date', 
+        'event_price'
+        ]
 
     def form_valid(self, form):
         # form.instance.author = self.request.user
@@ -68,7 +73,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     fields = ['title', 'content']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        # form.instance.author = self.request.user
         return super().form_valid(form)
 
 
@@ -77,7 +82,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['title', 'content']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        # form.instance.author = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
@@ -114,7 +119,16 @@ def admin_control(request):
 
 def view_all_subs(request):
     subbers = UserSubscribe.objects.all().order_by('purchase_date')
-    return render(request, 'vkr/subbers.html', {'subbers': subbers})
+    event_pack = []
+    
+    for el in subbers:
+        event_pack.append({
+            'purchase_date': el.purchase_date,
+            'username': User.objects.get(id=el.user_id).username,
+            'valid_until': el.valid_until, 
+            })
+        
+    return render(request, 'vkr/subbers.html', {'event_pack': event_pack})
 
 def view_event_members(request):
     members = EventMembers.objects.all().order_by('enjoy_date')

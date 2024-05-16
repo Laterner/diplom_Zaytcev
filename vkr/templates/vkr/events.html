@@ -38,25 +38,23 @@
     }
 </style>
 
-    {% comment %} <div class="content-section">
-        {% if events %}
-            <h3>Текущие мериприятия</h3> 
-        {% else %}
-                В данный момент нет подходящих мериприятий
+    <div class="content-section">
+        {% if not events %}
+            В данный момент нет подходящих мериприятий
         {% endif %}
-    </div> {% endcomment %}
+    </div>
     {% for event in events %}
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
                 <small class="text-muted">{{ event.date_posted|date:"F d, Y" }}</small>
                 </div>
-                <h2>{{ event.title }}</h2>
+                <a href="{% url 'event-detail' event.id %}"><h2>{{ event.title }}</h2></a>
+                <h5>Дата проведения мероприятия: {{ object.event_date }}</h5>
+                <h5>Цена без подписки: {{ object.event_price }}</h5>
                 <p class="article-content">{{ event.content }}</p>
-                {% comment %} <a class="article-title" href="{% url 'vkr-enjoy_event' event.id %}" style="float: right;"> 
-                    
-                </a>  TODO style {% endcomment %}
-                <button class="type_button" onclick="ao({{ event.id }})">Записаться</button>
+                {% comment %} TODO style {% endcomment %}
+                <button class="type_button" onclick="Send({{ event.id }})">Записаться</button>
             </div>
         </article>
     {% endfor %}
@@ -76,29 +74,11 @@
             xmlHttp.send( null );
             return xmlHttp.responseText;
         }
-        async function getBody(url) {
-            const options = {
-                url: url,
-                method: 'GET',
-            };
-
-            // Return new promise
-            return new Promise(function(resolve, reject) {
-                // Do async job
-                request.get(options, function(err, resp, body) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(body);
-                }
-                })
-            })
-        }
         function Close(){
             document.getElementById('modal-conteiner').classList.add('hidden');
             document.getElementById('modal-conteiner').classList.remove('modal-conteiner');
         }
-        function ao(id){
+        function Send(id){
             document.getElementById('modal-conteiner').classList.add('modal-conteiner');
             document.getElementById('modal-conteiner').classList.remove('hidden');
             
