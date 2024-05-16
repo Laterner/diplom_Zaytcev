@@ -91,14 +91,13 @@ def subs(request):
     return render(request, 'vkr/subscription-sale.html')
 
 @login_required
-def active_sub(request):
+def active_sub(request, sub_type):
     sub_types = {
         'start':91,
         'middle':182,
         'pro':365,
     }
 
-    sub_type = request.GET.get('sub_type')
     if sub_type == None:
         return HttpResponse('incorrect request')
     
@@ -114,14 +113,14 @@ def active_sub(request):
     
     try:
         if current_sub := UserSubscribe.objects.get(user_id=user_id):
-            return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until}) <a href="/subs">Вернуться</a>')
+            return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until})')
     except:
         pass
     
     purchase_date = datetime.today()
     valid_until = datetime.today() + timedelta(days=days)
     UserSubscribe.objects.create(user_id=user_id, purchase_date=purchase_date, valid_until=valid_until)
-    return HttpResponse(f'Оплата прошла успешно! <a href="/subs">Вернуться</a>') # TODO Добавить страницу оплаты
+    return HttpResponse(f'Оплата прошла успешно!') # TODO Добавить страницу оплаты
 
 def view_all_subs(request):
     subbers = UserSubscribe.objects.all().order_by('purchase_date')
@@ -139,13 +138,13 @@ def enjoy_event(request, event_id):
       if current_event := Event.objects.get(id=event_id):
             try:
                 if user := EventMembers.objects.get(user_id=user_id):
-                    return HttpResponse('Пользователь уже записан на данное мероприятие <a href="/events">Вернуться</a>')
+                    return HttpResponse('Вы уже записаны на данное мероприятие')
             except:
                 pass
             
             em = EventMembers(event_id=event_id, user_id=user_id)
             em.save()
     except:
-      return HttpResponse('Такого курса нет <a href="/events">Вернуться</a>')
+      return HttpResponse('Такого мероприятия нет')
 
-    return HttpResponse('Успех <a href="/events">Вернуться</a>')
+    return HttpResponse('Вы успешно записались')

@@ -1,71 +1,70 @@
-{% extends "vkr/base.html" %}
-{% block content %}
+{% extends "vkr/base.html" %} {% block content %}
 
 <style>
-    @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
+  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
 
-    * {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Source Sans Pro", sans-serif;
-    }
-    body {
+  }
+  body {
     background-color: #dff9fb;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    }
-    h1 {
+  }
+  h1 {
     text-align: center;
     margin-top: 2rem;
-    }
-    p {
+  }
+  p {
     text-align: center;
     margin-bottom: 4rem;
-    }
-    .pricing {
+  }
+  .pricing {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
     .plan {
-        background-color: #fff;
-        padding: 2.5rem;
-        margin: 12px;
-        border-radius: 5px;
-        text-align: center;
-        transition: 0.3s;
+      background-color: #fff;
+      padding: 2.5rem;
+      margin: 12px;
+      border-radius: 5px;
+      text-align: center;
+      transition: 0.3s;
 
-        h2 {
+      h2 {
         font-size: 22px;
         margin-bottom: 12px;
-        }
+      }
 
-        .price {
+      .price {
         margin-bottom: 1rem;
         font-size: 30px;
-        }
+      }
 
-        ul.features {
+      ul.features {
         list-style-type: none;
         text-align: left;
         li {
-            margin: 8px;
-            .fas {
+          margin: 8px;
+          .fas {
             margin-right: 4px;
-            }
-            .fa-check-circle {
+          }
+          .fa-check-circle {
             color: #6ab04c;
-            }
-            .fa-times-circle {
+          }
+          .fa-times-circle {
             color: #eb4d4b;
-            }
+          }
         }
-        }
+      }
 
-        button {
+      button {
         border: none;
         width: 100%;
         padding: 12px 35px;
@@ -75,82 +74,159 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
-        }
+      }
 
-        &.popular {
+      &.popular {
         border: 2px solid #6ab04c;
         position: relative;
         transform: scale(1.08);
 
         span {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #6ab04c;
-            color: #fff;
-            padding: 4px 20px;
-            font-size: 18px;
-            border-radius: 5px;
+          position: absolute;
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #6ab04c;
+          color: #fff;
+          padding: 4px 20px;
+          font-size: 18px;
+          border-radius: 5px;
         }
-        }
+      }
 
-        &:hover {
+      &:hover {
         box-shadow: 5px 7px 67px -28px rgba(0, 0, 0, 0.37);
-        }
+      }
     }
+  }
+  a {
+    text-decoration: none;
+  }
+  .close_button {
+        width: 150px;
+        height: 30px;
+        background-color: #428bca;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        margin: 0 auto;
+        margin-bottom: 15px;
     }
-    a {
-        text-decoration: none;
+    .close_button:focus{
+        border: none;
     }
-    </style>
+    .hidden {
+        display: none;
+    }
+    .modal-conteiner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        background-color: #3333335e;
+    }
+    .modal-content {
+        width: 600px;
+        margin: 0 auto;
+    }
+    #modal-text-insert{
+        padding: 20px 20px 0 20px;
+    }
+</style>
 
-    <div class="content-section">
-        <h2>Текущие тарифы</h2>
+<div class="content-section">
+  <h2>Текущие тарифы</h2>
 
-        <p>
-            Безлимитное посещение мероприятий
-        </p>
+  <p>Безлимитное посещение мероприятий</p>
 
-        <div class="pricing noselect">
-            <div class="plan">
-                <h2>"Безлимит" на 3 месяца</h2>
-                <div class="price">19.000₽</div>
-                <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
-                <li><i class="fas fa-check-circle"></i> 1 User</li>
-                <li><i class="fas fa-check-circle"></i> 100MB Space/website</li>
-                <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
-                <li><i class="fas fa-times-circle"></i> No priority support</li>
-                </ul>
-                <a href='/active_sub/?sub_type=start'><button>Купить</button></a>
-            </div>
-            <div class="plan popular">
-                <span>Выбор клиентов</span>
-                <h2>"Безлимит" на 6 месяцев</h2>
-                <div class="price">30.000₽</div>
-                <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
-                <li><i class="fas fa-check-circle"></i> 5 Users</li>
-                <li><i class="fas fa-check-circle"></i> 512MB Space/website</li>
-                <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
-                <li><i class="fas fa-check-circle"></i> Email Support</li>
-                </ul>
-                <a href='/active_sub/?sub_type=middle'><button>Купить</button></a>
-            </div>
-            <div class="plan">
-                <h2>"Безлимит" на 12 месяцев</h2>
-                <div class="price">50.000₽</div>
-                <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
-                <li><i class="fas fa-check-circle"></i> Unlimited Users</li>
-                <li><i class="fas fa-check-circle"></i> Unlimited Space/website</li>
-                <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
-                <li><i class="fas fa-check-circle"></i> 24/7 Email support</li>
-                </ul>
-                <a href='/active_sub/?sub_type=pro'><button>Купить</button></a>
-            </div>
-        </div>
-
+  <div class="pricing noselect">
+    <div class="plan">
+      <h2>"Безлимит" на 3 месяца</h2>
+      <div class="price">19.000₽</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
+        <li><i class="fas fa-check-circle"></i> 1 User</li>
+        <li><i class="fas fa-check-circle"></i> 100MB Space/website</li>
+        <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
+        <li><i class="fas fa-times-circle"></i> No priority support</li>
+      </ul>
+      <button onclick="OpenModal('start')">Купить</button>
     </div>
+    <div class="plan popular">
+      <span>Выбор клиентов</span>
+      <h2>"Безлимит" на 6 месяцев</h2>
+      <div class="price">30.000₽</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
+        <li><i class="fas fa-check-circle"></i> 5 Users</li>
+        <li><i class="fas fa-check-circle"></i> 512MB Space/website</li>
+        <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
+        <li><i class="fas fa-check-circle"></i> Email Support</li>
+      </ul>
+      <button onclick="OpenModal('middle')">Купить</button>
+    </div>
+    <div class="plan">
+      <h2>"Безлимит" на 12 месяцев</h2>
+      <div class="price">50.000₽</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Unlimited Websites</li>
+        <li><i class="fas fa-check-circle"></i> Unlimited Users</li>
+        <li><i class="fas fa-check-circle"></i> Unlimited Space/website</li>
+        <li><i class="fas fa-check-circle"></i> Continuous deployment</li>
+        <li><i class="fas fa-check-circle"></i> 24/7 Email support</li>
+      </ul>
+      {% comment %} <a href="/active_sub/?sub_type=pro"></a> {% endcomment %}
+      <button onclick="OpenModal('pro')">Купить</button>
+    </div>
+  </div>
+</div>
+    
+    <div id="modal-conteiner" class="hidden">
+        <div class="modal-content">
+            <p id="modal-text-insert"></p>
+            <button onclick="Close()" class="close_button">Закрыть</button>
+        </div>
+    </div>
+    <script>
+        function httpGet(theUrl)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
+        }
+        async function getBody(url) {
+            const options = {
+                url: url,
+                method: 'GET',
+            };
+
+            // Return new promise
+            return new Promise(function(resolve, reject) {
+                // Do async job
+                request.get(options, function(err, resp, body) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(body);
+                }
+                })
+            })
+        }
+        function Close(){
+            document.getElementById('modal-conteiner').classList.add('hidden');
+            document.getElementById('modal-conteiner').classList.remove('modal-conteiner');
+        }
+        function OpenModal(id){
+            document.getElementById('modal-conteiner').classList.add('modal-conteiner');
+            document.getElementById('modal-conteiner').classList.remove('hidden');
+            
+            var answer = httpGet('/active_sub/start/');
+            document.getElementById('modal-text-insert').innerText = answer;
+        }
+    </script>
 {% endblock content %}

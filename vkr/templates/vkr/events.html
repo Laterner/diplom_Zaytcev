@@ -1,5 +1,43 @@
 {% extends "vkr/base.html" %}
 {% block content %}
+    
+<style>
+    .close_button {
+        width: 150px;
+        height: 30px;
+        background-color: #428bca;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        margin: 0 auto;
+        margin-bottom: 15px;
+    }
+    .close_button:focus{
+        border: none;
+    }
+    .hidden {
+        display: none;
+    }
+    .modal-conteiner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        background-color: #3333335e;
+    }
+    .modal-content {
+        width: 600px;
+        margin: 0 auto;
+    }
+    #modal-text-insert{
+        padding: 20px 20px 0 20px;
+    }
+</style>
+
     {% comment %} <div class="content-section">
         {% if events %}
             <h3>Текущие мериприятия</h3> 
@@ -18,12 +56,26 @@
                 {% comment %} <a class="article-title" href="{% url 'vkr-enjoy_event' event.id %}" style="float: right;"> 
                     
                 </a>  TODO style {% endcomment %}
-                <button class="type_button" onclick="ao()">Записаться</button>
+                <button class="type_button" onclick="ao({{ event.id }})">Записаться</button>
             </div>
         </article>
     {% endfor %}
-    
+
+    <div id="modal-conteiner" class="hidden">
+        <div class="modal-content">
+            <p id="modal-text-insert"></p>
+            <button onclick="Close()" class="close_button">Закрыть</button>
+        </div>
+    </div>
+
     <script>
+        function httpGet(theUrl)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
+        }
         async function getBody(url) {
             const options = {
                 url: url,
@@ -42,9 +94,16 @@
                 })
             })
         }
-        function ao(){
-            const al = getBody('/enjoy_event/1/');
-            alert(al)
+        function Close(){
+            document.getElementById('modal-conteiner').classList.add('hidden');
+            document.getElementById('modal-conteiner').classList.remove('modal-conteiner');
+        }
+        function ao(id){
+            document.getElementById('modal-conteiner').classList.add('modal-conteiner');
+            document.getElementById('modal-conteiner').classList.remove('hidden');
+            
+            var answer = httpGet('/enjoy_event/'+ id +'/');
+            document.getElementById('modal-text-insert').innerText = answer;
         }
     </script>
 {% endblock content %}
