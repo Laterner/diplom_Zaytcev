@@ -8,10 +8,11 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post, Event, UserSubscribe
+from .models import Post, Event, UserSubscribe, EventMembers
 from django.contrib.auth.decorators import login_required
 
 from datetime import datetime, timedelta
+
 
 def home(request):
     context = {
@@ -125,3 +126,26 @@ def active_sub(request):
 def view_all_subs(request):
     subbers = UserSubscribe.objects.all().order_by('purchase_date')
     return render(request, 'vkr/subbers.html', {'subbers': subbers})
+
+def view_event_members(request):
+    members = EventMembers.objects.all().order_by('enjoy_date')
+    return render(request, 'vkr/subbers.html', {'members': members})
+
+@login_required
+def enjoy_event(request, event_id):
+    user_id = request.user.id
+
+    try:
+      if current_event := Event.objects.get(id=event_id):
+            try:
+                if user := EventMembers.objects.get(user_id=user_id):
+                    return HttpResponse('Пользователь уже записан на данное мероприятие <a href="/events">Вернуться</a>')
+            except:
+                pass
+            
+            em = EventMembers(event_id=event_id, user_id=user_id)
+            em.save()
+    except:
+      return HttpResponse('Такого курса нет <a href="/events">Вернуться</a>')
+
+    return HttpResponse('Успех <a href="/events">Вернуться</a>')

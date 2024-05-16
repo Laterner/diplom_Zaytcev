@@ -1,3 +1,7 @@
+#root {
+  --main-color: #428bca;
+}
+
 body,
 html {
  width:100%;
@@ -129,4 +133,16 @@ footer a{
 footer a:hover {
   color:#777;
   text-decoration: none;
+}
+
+.type_button {
+  border: none;
+  width: 100%;
+  padding: 12px 35px;
+  margin-top: 1rem;
+  background-color: #428bca;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }

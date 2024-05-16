@@ -15,8 +15,36 @@
                 </div>
                 <h2>{{ event.title }}</h2>
                 <p class="article-content">{{ event.content }}</p>
-                <a class="article-title" href="{{ event.id }}" style="float-left"> Записаться </a> {% comment %} TODO style {% endcomment %}
+                {% comment %} <a class="article-title" href="{% url 'vkr-enjoy_event' event.id %}" style="float: right;"> 
+                    
+                </a>  TODO style {% endcomment %}
+                <button class="type_button" onclick="ao()">Записаться</button>
             </div>
         </article>
     {% endfor %}
+    
+    <script>
+        async function getBody(url) {
+            const options = {
+                url: url,
+                method: 'GET',
+            };
+
+            // Return new promise
+            return new Promise(function(resolve, reject) {
+                // Do async job
+                request.get(options, function(err, resp, body) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(body);
+                }
+                })
+            })
+        }
+        function ao(){
+            const al = getBody('/enjoy_event/1/');
+            alert(al)
+        }
+    </script>
 {% endblock content %}

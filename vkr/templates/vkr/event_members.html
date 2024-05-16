@@ -1,0 +1,12 @@
+{% extends "vkr/base.html" %}
+{% block content %}
+    {% for member in members %}
+        <article class="media content-section">
+            <div class="media-body">
+                <p class="text-muted">Дата покупки: {{ member.enjoy_date|date:"F d, Y" }}</p> 
+                <p>Id эвента: {{ member.event_id }}</p>
+                <p>Id пользователя: {{ member.user_id }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

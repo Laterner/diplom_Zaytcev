@@ -26,7 +26,12 @@ class Event (models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event-detail', kwargs={'ev': self.ev})
+        return reverse('event-detail', kwargs={'ev': self.pk})
+
+class EventMembers(models.Model):
+    event_id = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField()
+    enjoy_date = models.DateTimeField(default=timezone.now)
     
 class UserSubscribe (models.Model):
     user_id = models.IntegerField(primary_key=True)
