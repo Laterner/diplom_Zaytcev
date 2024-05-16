@@ -135,12 +135,15 @@ def view_event_members(request):
     event_pack = []
     
     for el in members:
-        event_pack.append({
-            'event_id': el.event_id,
-            'enjoy_date': el.enjoy_date,
-            'event_name': Event.objects.get(id=el.event_id).title, 
-            'event_member': User.objects.get(id=el.user_id).username
-            })
+        try:
+            event_pack.append({
+                'event_id': el.event_id,
+                'enjoy_date': el.enjoy_date,
+                'event_name': Event.objects.get(id=el.event_id).title, 
+                'event_member': User.objects.get(id=el.user_id).username
+                })
+        except:
+            pass
         
     return render(request, 'vkr/event_members.html', {'event_pack': event_pack})
 
