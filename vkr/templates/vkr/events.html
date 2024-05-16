@@ -52,8 +52,8 @@
                 <small class="text-muted">{{ event.date_posted|date:"F d, Y" }}</small>
                 </div>
                 <a href="{% url 'event-detail' event.id %}"><h2>{{ event.title }}</h2></a>
-                <h5>Дата проведения мероприятия: {{ object.event_date }}</h5>
-                <h5>Цена без подписки: {{ object.event_price }}</h5>
+                <h5>Дата проведения мероприятия: {{ event.event_date }}</h5>
+                <h5>Цена без подписки: {{ event.event_price }}</h5>
                 <p class="article-content">{{ event.content }}</p>
                 {% comment %} TODO style {% endcomment %}
                 <button class="type_button" onclick="Send({{ event.id }})">Записаться</button>
