@@ -1,5 +1,6 @@
 {% extends "vkr/base.html" %} 
 {% block content %} 
+{% if event_pack %}
     {% for event in event_pack %}
     <article class="media content-section">
     <div class="media-body">
@@ -13,4 +14,9 @@
     </div>
     </article>
     {% endfor %} 
+
+{% else %}
+<article class="media content-section">В данный момент нет записей </article>
+{% endif %}
+
 {% endblock content %}

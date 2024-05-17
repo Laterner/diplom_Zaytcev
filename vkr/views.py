@@ -141,7 +141,7 @@ def view_event_members(request):
                 'event_id': el.event,
                 'enjoy_date': el.enjoy_date,
                 'event_name': Event.objects.get(id=el.event).title, 
-                'event_member': User.objects.get(id=el.user).username,
+                'event_member': el.user_prof.username,
                 'user_prof': el.user_prof,
             })
         except:
