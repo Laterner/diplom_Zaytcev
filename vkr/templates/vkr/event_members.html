@@ -10,7 +10,7 @@
         {% for el in event.data %}
         <hr>
         <p class="text-muted">
-            Дата присоединения: {{ event.enjoy_date|date:"F d, Y" }}
+            Дата присоединения: {{ el.enjoy_date|date:"F d, Y" }}
         </p>
         <p>Имя пользователя: {{ el.event_member }}</p>
         <p>О себе: {{ el.user_prof.profile.about_me }}</p>
