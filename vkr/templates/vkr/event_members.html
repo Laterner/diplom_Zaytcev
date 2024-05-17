@@ -8,8 +8,8 @@
         </p>
         <p>Название мероприятия: {{ event.event_name }}</p>
         <p>Имя пользователя: {{ event.event_member }}</p>
-        <p>О себе: {{ event.user_prof }}</p>
-        {% comment %} <p>Кого ищет: {{  event.user_prof.profile.looking_for }}</p> {% endcomment %}
+        <p>О себе: {{ event.user_prof.profile.about_me }}</p>
+        <p>Кого ищет: {{  event.user_prof.profile.looking_for }}</p>
     </div>
     </article>
     {% endfor %} 

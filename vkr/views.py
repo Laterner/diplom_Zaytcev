@@ -193,7 +193,7 @@ def enjoy_event(request, event_id):
         if EventMembers.objects.filter(event=event_id, user=user_id).exists():
                 return HttpResponse('Вы уже записаны на данное мероприятие')
         
-        em = EventMembers(event=event_id, user=user_id)
+        em = EventMembers(event=event_id, user=user_id, user_prof_id=user_id)
         em.save()
     else:
         return HttpResponse('Такого мероприятия нет')
