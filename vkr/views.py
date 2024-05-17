@@ -187,8 +187,7 @@ def enjoy_event(request, event_id):
     if not request.user.is_authenticated:
         return HttpResponse('Для записи необходимо авторизоваться')
 
-    if not UserSubscribe.objects.filter(user_id=user_id).exists():
-        return HttpResponse('Сначала купите подписку')
+    
        
     if Event.objects.filter(id=event_id).exists():
         if EventMembers.objects.filter(event=event_id, user=user_id).exists():
@@ -198,5 +197,8 @@ def enjoy_event(request, event_id):
         em.save()
     else:
         return HttpResponse('Такого мероприятия нет')
-
+    
+    if not UserSubscribe.objects.filter(user_id=user_id).exists():
+        return HttpResponse('Вы успешно записались, необходимо оплатить вход')
+    
     return HttpResponse('Вы успешно записались')

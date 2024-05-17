@@ -16,7 +16,7 @@
     {% if title %}
         <title>{{ title }}</title>
     {% else %}
-        <title>BusinessUnityHub</title>
+        <title>#EventЧетверг</title>
     {% endif %}
 </head>
 <body>
@@ -33,6 +33,7 @@
               <a class="nav-item nav-link" href="{% url 'vkr-home' %}">Новости</a>
               <a class="nav-item nav-link" href="{% url 'vkr-events' %}">Мероприятия</a>
               <a class="nav-item nav-link" href="{% url 'vkr-subs' %}">Абонементы</a>
+              <a class="nav-item nav-link" href="{% url 'vkr-view_all_subs' %}">Члены сообщества</a>
 
               {% if user.is_superuser %}
                 <a class="nav-item nav-link" href="{% url 'vkr-admin_control' %}">Админка</a>
@@ -88,7 +89,7 @@
     </main>
     <!-- Футер закреплен внизу, независимо от количества постов на странице -->
     <footer class="text-center bg-dark">
-      <p><a href="{% url 'vkr-home' %}">© BusinessUnityHub 2024</a></p>
+      <p><a href="{% url 'vkr-home' %}">© #EventЧетверг 2024</a></p>
     </footer>
 
     <!-- Дополнительные скрипты JavaScript -->

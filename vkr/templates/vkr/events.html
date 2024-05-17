@@ -1,44 +1,7 @@
 {% extends "vkr/base.html" %}
+{% load static %}
 {% block content %}
-    
-<style>
-    .close_button {
-        width: 150px;
-        height: 30px;
-        background-color: #428bca;
-        color: white;
-        border-radius: 10px;
-        cursor: pointer;
-        border: none;
-        margin: 0 auto;
-        margin-bottom: 15px;
-    }
-    .close_button:focus{
-        border: none;
-    }
-    .hidden {
-        display: none;
-    }
-    .modal-conteiner {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        background-color: #3333335e;
-    }
-    .modal-content {
-        width: 600px;
-        margin: 0 auto;
-    }
-    #modal-text-insert{
-        padding: 20px 20px 0 20px;
-    }
-</style>
-
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'modal.css' %}">
     {% if not events %}
         <div class="content-section">
             В данный момент нет подходящих мериприятий
@@ -64,7 +27,8 @@
     <div id="modal-conteiner" class="hidden">
         <div class="modal-content">
             <p id="modal-text-insert"></p>
-            <button onclick="Close()" class="close_button">Закрыть</button>
+            <button onclick="Close()" id="close_button" class="close_button">Закрыть</button>
+            <button onclick="Pay()" id="pay_button" class="close_button hidden">Оплатить</button>
         </div>
     </div>
 
@@ -76,6 +40,11 @@
             xmlHttp.send( null );
             return xmlHttp.responseText;
         }
+        function Pay(){
+            document.getElementById('modal-text-insert').innerText = "Успешно оплачено";
+            document.getElementById('pay_button').classList.add('hidden');
+            document.getElementById('close_button').classList.remove('hidden');
+        }
         function Close(){
             document.getElementById('modal-conteiner').classList.add('hidden');
             document.getElementById('modal-conteiner').classList.remove('modal-conteiner');
@@ -85,6 +54,10 @@
             document.getElementById('modal-conteiner').classList.remove('hidden');
             
             var answer = httpGet('/enjoy_event/'+ id +'/');
+            if (~answer.indexOf("оплатить")){
+                document.getElementById('close_button').classList.add('hidden');
+                document.getElementById('pay_button').classList.remove('hidden');
+            }
             document.getElementById('modal-text-insert').innerText = answer;
         }
     </script>

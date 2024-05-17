@@ -1,92 +1,58 @@
-{% extends "vkr/base.html" %} {% block content %}
-
-<style>
-  .close_button {
-    width: 150px;
-    height: 30px;
-    background-color: #428bca;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    border: none;
-    margin: 0 auto;
-    margin-bottom: 15px;
-  }
-  .close_button:focus {
-    border: none;
-  }
-  .hidden {
-    display: none;
-  }
-  .modal-conteiner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    background-color: #3333335e;
-  }
-  .modal-content {
-    width: 600px;
-    margin: 0 auto;
-  }
-  #modal-text-insert {
-    padding: 20px 20px 0 20px;
-  }
-</style>
-<article class="media content-section">
-  <div class="media-body">
-    <div class="article-metadata">
-      {% comment %}
-      <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
-      {% endcomment %}
-      <h2 class="article-title">{{ object.title }}</h2>
+{% extends "vkr/base.html" %}
+{% load static %}
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'modal.css' %}">
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        {% comment %}
+        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+        {% endcomment %}
+        <h2 class="article-title">{{ object.title }}</h2>
+      </div>
+      <p class="article-content">{{ object.content }}</p>
+      <p>Дата проведения мероприятия: {{ object.event_date }}</p>
+      <p>Стоимость участия без подписки: {{ object.event_price }}</p>
+      <button class="type_button" onclick="Send({{ event.id }})">
+        Записаться
+      </button>
+      {% if user.is_superuser %}
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Редактировать</a>
+        {% comment %} {% url 'event-update' object.id %} {% endcomment %}
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="#">Удалить</a> 
+        {% comment%} {% url 'event-delete' object.id %} {% endcomment %}
+      </div>
+      {% endif %}
     </div>
-    <p class="article-content">{{ object.content }}</p>
-    <p>Дата проведения мероприятия: {{ object.event_date }}</p>
-    <p>Стоимость участия без подписки: {{ object.event_price }}</p>
-    <button class="type_button" onclick="Send({{ event.id }})">
-      Записаться
-    </button>
-    {% if user.is_superuser %}
-    <div>
-      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Редактировать</a>
-      {% comment %} {% url 'event-update' object.id %} {% endcomment %}
-      <a class="btn btn-danger btn-sm mt-1 mb-1" href="#">Удалить</a> 
-      {% comment%} {% url 'event-delete' object.id %} {% endcomment %}
+  </article>
+
+  <div id="modal-conteiner" class="hidden">
+    <div class="modal-content">
+      <p id="modal-text-insert"></p>
+      <button onclick="Close()" class="close_button">Закрыть</button>
     </div>
-    {% endif %}
   </div>
-</article>
 
-<div id="modal-conteiner" class="hidden">
-  <div class="modal-content">
-    <p id="modal-text-insert"></p>
-    <button onclick="Close()" class="close_button">Закрыть</button>
-  </div>
-</div>
+  <script>
+    function httpGet(theUrl) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", theUrl, false); // false for synchronous request
+      xmlHttp.send(null);
+      return xmlHttp.responseText;
+    }
+    function Close() {
+      document.getElementById("modal-conteiner").classList.add("hidden");
+      document
+        .getElementById("modal-conteiner")
+        .classList.remove("modal-conteiner");
+    }
+    function Send(id) {
+      document.getElementById("modal-conteiner").classList.add("modal-conteiner");
+      document.getElementById("modal-conteiner").classList.remove("hidden");
 
-<script>
-  function httpGet(theUrl) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl, false); // false for synchronous request
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
-  }
-  function Close() {
-    document.getElementById("modal-conteiner").classList.add("hidden");
-    document
-      .getElementById("modal-conteiner")
-      .classList.remove("modal-conteiner");
-  }
-  function Send(id) {
-    document.getElementById("modal-conteiner").classList.add("modal-conteiner");
-    document.getElementById("modal-conteiner").classList.remove("hidden");
-
-    var answer = httpGet("/enjoy_event/" + id + "/");
-    document.getElementById("modal-text-insert").innerText = answer;
-  }
-</script>
+      var answer = httpGet("/enjoy_event/" + id + "/");
+      document.getElementById("modal-text-insert").innerText = answer;
+    }
+  </script>
 {% endblock content %}
