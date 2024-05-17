@@ -133,11 +133,17 @@ def view_all_subs(request):
 
 def view_event_members(request):
     members = EventMembers.objects.all().order_by('enjoy_date')
-    event_pack = []
+    event_pack = {}
+
+    for el in members:
+        event_pack[el.event] = {
+            'title': Event.objects.get(id=el.event).title, 
+            'data': []
+            }
     
     for el in members:
         try:
-            event_pack.append({
+            event_pack[el.event]['data'].append({
                 'event_id': el.event,
                 'enjoy_date': el.enjoy_date,
                 'event_name': Event.objects.get(id=el.event).title, 
@@ -145,8 +151,8 @@ def view_event_members(request):
                 'user_prof': el.user_prof,
             })
         except:
-            print(el.event, el.enjoy_date)
-        
+            print("error ------------------ error")
+    # print(evesnt_pack)
     return render(request, 'vkr/event_members.html', {'event_pack': event_pack})
 
 

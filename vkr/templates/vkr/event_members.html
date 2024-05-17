@@ -1,16 +1,21 @@
 {% extends "vkr/base.html" %} 
 {% block content %} 
 {% if event_pack %}
-    {% for event in event_pack %}
+
+    {% for event_id, event in event_pack.items %}
     <article class="media content-section">
     <div class="media-body">
+        <p>Название мероприятия: {{ event.title }}</p>
+        
+        {% for el in event.data %}
+        <hr>
         <p class="text-muted">
             Дата присоединения: {{ event.enjoy_date|date:"F d, Y" }}
         </p>
-        <p>Название мероприятия: {{ event.event_name }}</p>
-        <p>Имя пользователя: {{ event.event_member }}</p>
-        <p>О себе: {{ event.user_prof.profile.about_me }}</p>
-        <p>Кого ищет: {{  event.user_prof.profile.looking_for }}</p>
+        <p>Имя пользователя: {{ el.event_member }}</p>
+        <p>О себе: {{ el.user_prof.profile.about_me }}</p>
+        <p>Кого ищет: {{ el.user_prof.profile.looking_for }}</p>
+        {% endfor %}
     </div>
     </article>
     {% endfor %} 
