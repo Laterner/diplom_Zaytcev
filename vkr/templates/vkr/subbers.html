@@ -6,6 +6,8 @@
                 <p>Имя подписчика: {{ sub.username }}</p>
                 <p class="text-muted">Дата покупки: {{ sub.purchase_date|date:"F d, Y" }}</p> 
                 <p class="text-muted">Действует до: {{ sub.valid_until|date:"F d, Y" }}</p>
+                <p>{{sub.profile.profile.about_me}}</p>
+                <p>{{sub.profile.profile.looking_for}}</p>
             </div>
         </article>
     {% endfor %}

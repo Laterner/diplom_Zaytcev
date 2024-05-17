@@ -34,7 +34,6 @@ class Event (models.Model):
 class EventMembers(models.Model):
     id = models.IntegerField(primary_key=True)
     event = models.IntegerField(default=1,blank=True, null=True)
-    user = models.IntegerField(default=1,blank=True, null=True)
     enjoy_date = models.DateTimeField(default=timezone.now)
     
     user_prof = models.ForeignKey(
@@ -48,7 +47,12 @@ class EventMembers(models.Model):
         return self.event_id.__str__()
     
 class UserSubscribe (models.Model):
-    user_id = models.IntegerField(primary_key=True)
-    # username = models.CharField(default='', max_length=150)
+    user_id = models.ForeignKey(
+        User, 
+        blank=True,
+        null=True, 
+        on_delete=models.CASCADE
+    )
+    
     purchase_date = models.DateTimeField(default=timezone.now)
     valid_until = models.DateTimeField(default=None)

@@ -124,8 +124,9 @@ def view_all_subs(request):
     for el in subbers:
         event_pack.append({
             'purchase_date': el.purchase_date,
-            'username': User.objects.get(id=el.user_id).username,
+            'username': el.user_id.username,
             'valid_until': el.valid_until, 
+            'profile': el.user_id
             })
         
     return render(request, 'vkr/subbers.html', {'event_pack': event_pack})
@@ -178,7 +179,8 @@ def active_sub(request, sub_type):
     
     purchase_date = datetime.today()
     valid_until = datetime.today() + timedelta(days=days)
-    UserSubscribe.objects.create(user_id=user_id, purchase_date=purchase_date, valid_until=valid_until)
+    u = UserSubscribe(user_id=request.user, purchase_date=purchase_date, valid_until=valid_until)
+    u.save()
     return HttpResponse(f'Оплата прошла успешно!') # TODO Добавить страницу оплаты
 
 def enjoy_event(request, event_id):
@@ -187,17 +189,16 @@ def enjoy_event(request, event_id):
     if not request.user.is_authenticated:
         return HttpResponse('Для записи необходимо авторизоваться')
 
-    
        
     if Event.objects.filter(id=event_id).exists():
-        if EventMembers.objects.filter(event=event_id, user=user_id).exists():
+        if EventMembers.objects.filter(event=event_id, user_prof_id=user_id).exists():
                 return HttpResponse('Вы уже записаны на данное мероприятие')
         
-        em = EventMembers(event=event_id, user=user_id, user_prof_id=user_id)
+        em = EventMembers(event=event_id, user_prof_id=user_id)
         em.save()
     else:
         return HttpResponse('Такого мероприятия нет')
-    
+
     if not UserSubscribe.objects.filter(user_id=user_id).exists():
         return HttpResponse('Вы успешно записались, необходимо оплатить вход')
     
