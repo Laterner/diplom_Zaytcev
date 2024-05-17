@@ -1,43 +1,7 @@
 {% extends "vkr/base.html" %}
+{% load static%}
 {% block content %}
-    <style>
-        .title{
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .palette{
-            display: grid;
-            place-items: center;
-            grid-template-columns: repeat(5, 200px);
-            grid-template-rows: repeat(1, 200px);
-            margin: 50px 0;
-            padding: 10px;
-            column-gap: 21px;
-            row-gap: 21px;
-            align-items: center;
-            background-color: #3333335e;
-            border-radius: 10px;
-        }
-        .palette div{
-            background-color: white;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .palette p {
-            width: 100%;
-            text-align: center;
-            font-size: x-large;
-        }
-        .palette div:hover {
-            background-color: #333333;
-            color: white;
-        }
-    </style>
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'about.css' %}">
     <div class="palette noselect">
         <div onclick="location.href = '/news/new';"><p> Создать новость </p></div>
         <div onclick="location.href = '/view_event_members';"><p> Список мероприятий и участников</p></div>

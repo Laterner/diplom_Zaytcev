@@ -137,14 +137,14 @@ def view_event_members(request):
     for el in members:
         try:
             event_pack.append({
-                'event_id': el.event_id,
+                'event_id': el.event,
                 'enjoy_date': el.enjoy_date,
-                'event_name': Event.objects.get(id=el.event_id).title, 
-                'event_member': User.objects.get(id=el.user_id).username,
+                'event_name': Event.objects.get(id=el.event).title, 
+                'event_member': User.objects.get(id=el.user).username,
                 'user_prof': el.user_prof,
             })
         except:
-            pass
+            print(el.event, el.enjoy_date)
         
     return render(request, 'vkr/event_members.html', {'event_pack': event_pack})
 
@@ -191,10 +191,10 @@ def enjoy_event(request, event_id):
         return HttpResponse('Сначала купите подписку')
        
     if Event.objects.filter(id=event_id).exists():
-        if EventMembers.objects.filter(event_id=event_id, user_id=user_id).exists():
+        if EventMembers.objects.filter(event=event_id, user=user_id).exists():
                 return HttpResponse('Вы уже записаны на данное мероприятие')
         
-        em = EventMembers(event_id=event_id, user_id=user_id)
+        em = EventMembers(event=event_id, user=user_id)
         em.save()
     else:
         return HttpResponse('Такого мероприятия нет')

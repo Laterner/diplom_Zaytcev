@@ -32,8 +32,9 @@ class Event (models.Model):
     
 
 class EventMembers(models.Model):
-    event_id = models.IntegerField(primary_key=True)
-    user_id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
+    event = models.IntegerField(default=1,blank=True, null=True)
+    user = models.IntegerField(default=1,blank=True, null=True)
     enjoy_date = models.DateTimeField(default=timezone.now)
     
     user_prof = models.ForeignKey(
