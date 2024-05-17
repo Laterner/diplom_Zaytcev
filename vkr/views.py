@@ -81,12 +81,13 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['title', 'content']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        post = self.get_object()
+        form.instance.author = post.author # self.request.user
         return super().form_valid(form)
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author:
+        if self.request.user == post.author or self.request.user.is_superuser:
             return True
         return False
 
