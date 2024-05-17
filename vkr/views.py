@@ -97,7 +97,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author:
+        if self.request.user == post.author or self.request.user.is_superuser:
             return True
         return False
 
@@ -139,6 +139,7 @@ def view_event_members(request):
                 'event_id': el.event_id,
                 'enjoy_date': el.enjoy_date,
                 'event_name': Event.objects.get(id=el.event_id).title, 
+                'event_member': User.objects.get(id=el.user_id).username,
                 'user_prof': el.user_prof,
             })
         except:
