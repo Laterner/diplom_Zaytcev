@@ -40,3 +40,9 @@
     background-color: #333333;
     color: white;
 }
+
+@media (max-width: 480px) {
+    .palette{
+        display: none;
+    }
+}

@@ -21,6 +21,10 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    image = forms.ImageField(label="Изображение пользователя", required=False)
+    about_me = forms.CharField(label="Обо мне", required=False)
+    looking_for = forms.CharField(label="Кого ищу", required=False)
+
     class Meta:
         model = Profile
         fields = ['image', 'about_me', 'looking_for']

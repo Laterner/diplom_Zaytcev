@@ -11,9 +11,14 @@ from django.views.generic import (
 from .models import Post, Event, UserSubscribe, EventMembers
 from django.contrib.auth.decorators import login_required
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 from datetime import datetime, timedelta
 
 from django.http import Http404
+
+import json
 
 def home(request):
     context = {
@@ -23,7 +28,7 @@ def home(request):
 
 
 class EventListView(ListView):
-    model = Event
+    queryset = Event.objects.filter(is_active=True)
     template_name = 'vkr/events.html'  
     context_object_name = 'events'
     ordering = ['-date_posted']
@@ -102,6 +107,77 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+
+def send_mail_form(subject, message, recipients):
+	send_mail(
+    		subject=subject,
+    		message=message,
+    		from_email=settings.EMAIL_HOST_USER,
+    		recipient_list=recipients)
+
+def get_date_postfix(days_remind: int) -> str:    
+    if days_remind % 10 == 0:
+        return ' дней'
+    elif days_remind % 10 == 1:
+        return ' день'
+    elif 2 >= days_remind % 10 >= 4:
+        return ' дня'
+    elif 5 >= days_remind % 10 >= 9:
+        return ' дней'
+    else:
+        return ' дней'
+    
+def get_active_events():    
+    evs = Event.objects.filter(is_active=True)
+    
+    response_data = {}
+    for i, ev in enumerate(evs):
+        # print(i, ev)
+
+        d1 = datetime.today().date()
+        d2 = ev.event_date.date()
+        
+        i = str(i)
+        response_data[i] = {}
+        response_data[i]['title'] = ev.title
+        response_data[i]['event_date'] = d2.__str__()
+        response_data[i]['today'] = d1.__str__()    
+
+        days = d1 - d2
+
+        if d1 <= d2:
+            email_list = []
+            response_data[i]['is_not_today'] = 'yes'
+            event_members = EventMembers.objects.filter(event=ev.pk)
+
+            for key, member in enumerate(event_members):
+                print(member.user_prof.email)
+                email_list.append(member.user_prof.email)
+
+            days_remind = days.days * -1
+            days_remind_s = str(days_remind) + get_date_postfix(days_remind)
+
+            send_mail_form(
+                'Напоминание об эвенте', 
+                f'Уважаемый подписчик, напоминаетм Вам, что через {days_remind_s} \
+                    дней пройдёт мероприятие[{ev.title}] на которое Вы зависались', 
+                email_list
+            )
+        else:
+            response_data[i]['is_not_today'] = 'no'
+            Event.objects.filter(pk=ev.pk).update(is_active=False)
+
+        response_data[i]['days'] = days.days
+        
+    # print('finish:', response_data)
+
+    return json.dumps(response_data)
+
+def get_url_response(request):
+    response_data = get_active_events()
+    # response_data = 'get_active_events()'
+    # send_mail_form('subject', 'message',[settings.EMAIL_HOST_USER])
+    return HttpResponse(response_data, content_type="application/json")
 
 def about(request):
     return render(request, 'vkr/about.html', {'title': 'О нашей организации'})

@@ -33,4 +33,6 @@ urlpatterns = [
     path('view_event_members/', views.view_event_members, name='vkr-view_event_members'),
     
     path('admin_control/', views.admin_control, name='vkr-admin_control'),
+
+    path('test_response/', views.get_url_response, name='test-url'),
 ]

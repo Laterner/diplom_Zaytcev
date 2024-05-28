@@ -44,7 +44,7 @@ class EventMembers(models.Model):
     )
     
     def __str__(self):
-        return self.event_id.__str__()
+        return self.event.__str__()
     
 class UserSubscribe (models.Model):
     user_id = models.ForeignKey(
