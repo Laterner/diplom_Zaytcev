@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     "crispy_forms",
     "crispy_bootstrap4",
+    "pwa",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sait_Zaytcev.urls'
-
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
+                                       
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
