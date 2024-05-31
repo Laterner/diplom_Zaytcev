@@ -20,6 +20,7 @@ from django.http import Http404
 
 import json
 
+
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -126,15 +127,46 @@ def get_date_postfix(days_remind: int) -> str:
         return ' дней'
     else:
         return ' дней'
+
+def notify_users_subs():
+    users = UserSubscribe.objects.all()
+
+    d1 = datetime.today().date()
+
+    email_list = []
+
+    for user in users:
+        d2 = user.purchase_date.date()
+        days: int = (d1 - d2).days
+
+        if days < 2:
+            print('days remind:', days)
+            email_list.append(user.user_id.email)
+
+    print('email_list:', email_list)
+
+    print(len(email_list))
+
+    if len(email_list) > 0:
+        send_mail_form(
+            'Напоминание об эвенте', 
+            f'Уважаемый подписчик, напоминаетм Вам, что завтра \
+                Ваша подписка закончится, не забудьте продлить её', 
+            [email_list]
+        )
+
+    return {'email_list:': email_list}
     
 def get_active_events():    
     evs = Event.objects.filter(is_active=True)
     
     response_data = {}
+    
+    d1 = datetime.today().date()
+
     for i, ev in enumerate(evs):
         # print(i, ev)
 
-        d1 = datetime.today().date()
         d2 = ev.event_date.date()
         
         i = str(i)
@@ -163,6 +195,7 @@ def get_active_events():
                     дней пройдёт мероприятие[{ev.title}] на которое Вы зависались', 
                 email_list
             )
+
         else:
             response_data[i]['is_not_today'] = 'no'
             Event.objects.filter(pk=ev.pk).update(is_active=False)
@@ -174,9 +207,10 @@ def get_active_events():
     return json.dumps(response_data)
 
 def get_url_response(request):
-    response_data = get_active_events()
+    # response_data = get_active_events()
     # response_data = 'get_active_events()'
     # send_mail_form('subject', 'message',[settings.EMAIL_HOST_USER])
+    response_data = notify_users_subs()
     return HttpResponse(response_data, content_type="application/json")
 
 def about(request):
