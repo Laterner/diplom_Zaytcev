@@ -88,7 +88,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         post = self.get_object()
-        form.instance.author = post.author # self.request.user
+        form.instance.author = post.author
         return super().form_valid(form)
 
     def test_func(self):
@@ -268,19 +268,6 @@ def view_event_members(request):
 
 """ API links """
 def active_sub(request, sub_type):
-    sub_types = {
-        'start':91,
-        'middle':182,
-        'pro':365,
-    }
-
-    if sub_type == None:
-        return HttpResponse('incorrect request')
-    
-    days = sub_types.get(sub_type)
-    if days == None:
-        return HttpResponse('incorrect type')
-    
     user_id = request.user.id
     username = request.user.username
     
@@ -293,11 +280,7 @@ def active_sub(request, sub_type):
     except:
         pass
     
-    purchase_date = datetime.today()
-    valid_until = datetime.today() + timedelta(days=days)
-    u = UserSubscribe(user_id=request.user, purchase_date=purchase_date, valid_until=valid_until)
-    u.save()
-    return HttpResponse(f'Оплата прошла успешно!') # TODO Добавить страницу оплаты
+    return HttpResponse('pay_page')
 
 def enjoy_event(request, event_id):
     user_id = request.user.id
@@ -319,3 +302,28 @@ def enjoy_event(request, event_id):
         return HttpResponse('Вы успешно записались, необходимо оплатить вход')
     
     return HttpResponse('Вы успешно записались')
+
+def get_pay(request):
+    pass
+
+def fake_pay(request, sub_type='middle'):
+    sub_types = {
+        'start':91,
+        'middle':182,
+        'pro':365,
+    }
+
+    if sub_type == None:
+        return HttpResponse('incorrect request')
+    
+    days = sub_types.get(sub_type)
+    if days == None:
+        return HttpResponse('incorrect type')
+
+    purchase_date = datetime.today()
+    valid_until = datetime.today() + timedelta(days=days)
+
+    user_sub = UserSubscribe(user_id=request.user, purchase_date=purchase_date, valid_until=valid_until)
+    user_sub.save()
+    # return HttpResponse(f'Оплата прошла успешно!')
+    return render(request, 'vkr/fake_pay.html') 

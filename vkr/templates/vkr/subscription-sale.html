@@ -54,7 +54,7 @@
     <div id="modal-conteiner" class="hidden">
         <div class="modal-content">
             <p id="modal-text-insert"></p>
-            <button onclick="Close()" class="close_button">Закрыть</button>
+            <button onclick="Close()" id="close_button" class="close_button">Закрыть</button>
         </div>
     </div>
     <script>
@@ -92,7 +92,20 @@
             document.getElementById('modal-conteiner').classList.remove('hidden');
             
             var answer = httpGet('/active_sub/start/');
-            document.getElementById('modal-text-insert').innerText = answer;
+            
+            if (~answer.indexOf('pay_page')){
+              document.getElementById('close_button').setAttribute( "onClick", "Redirect()" );
+              document.getElementById('close_button').innerText = "Оплатить";
+              document.getElementById('modal-text-insert').innerText = 'Перейдите на страницу оплаты';
+            }
+            else{
+              document.getElementById('close_button').setAttribute( "onClick", "Close()" );
+              document.getElementById('close_button').innerText = "Закрыть";
+              document.getElementById('modal-text-insert').innerText = answer;
+            }
+        }
+        function Redirect(){
+          window.location.href = '/fake_pay'
         }
     </script>
 {% endblock content %}

@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-_t0p3=ye4qunq1&%uphc6%#!ud1(g2or+$!eimv2dx3=cive=(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sait_Zaytcev.urls'
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
+# PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
                                        
 TEMPLATES = [
     {
@@ -170,3 +170,52 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=23, minute=38),
     },
 }
+
+
+PWA_APP_NAME = 'vkr_Zaytcev'
+PWA_APP_DESCRIPTION = "vkr_Zaytcev PWA"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/android/android-launchericon-144-144.png',
+        'sizes': '144x144'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/images/android/android-launchericon-144-144.png',
+        'sizes': '144x144'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/images/icons/splash-640x1136.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'ru-RU'
+PWA_APP_SHORTCUTS = [
+    {
+        'name': 'Shortcut',
+        'url': '/target',
+        'description': 'Shortcut to a page in my application'
+    }
+]
+PWA_APP_SCREENSHOTS = [
+    {
+      'src': '/static/images/icons/splash-750x1334.png',
+      'sizes': '750x1334',
+      "type": "image/png"
+    }
+]
+PWA_APP_DEBUG_MODE = True
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'ru_RU'

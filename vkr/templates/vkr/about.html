@@ -1,5 +1,12 @@
 ﻿{% extends "vkr/base.html" %}
 {% load static %}
+
+{% load pwa %}
+
+<head>
+  {% progressive_web_app_meta %}
+</head>
+
 {% block content %}
         
     <div class="content-section">
