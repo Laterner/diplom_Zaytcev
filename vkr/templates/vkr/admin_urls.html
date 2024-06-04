@@ -3,11 +3,13 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'about.css' %}">
     <div class="palette noselect">
-        <div onclick="location.href = '/news/new';"><p> Создать новость </p></div>
         <div onclick="location.href = '/view_event_members';"><p> Список мероприятий и участников</p></div>
         <div onclick="location.href = '/view_all_subs';"><p> Список членов сообщества </p></div>
         <div onclick="location.href = '/admin';"><p> Панель управления </p></div>
+        <div onclick="location.href = '/news/new';"><p> Создать новость </p></div>
         <div onclick="location.href = '/events/new';"><p> Создать мероприятие </p></div>
+        <div onclick="location.href = '/send_notification_event';"><p> Уведомление мероприятия </p></div>
+        <div onclick="location.href = '/send_notification_sub';"><p> Уведомление подписка </p></div>
     </div>
 
 {% endblock content %}

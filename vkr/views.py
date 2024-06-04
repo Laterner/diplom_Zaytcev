@@ -139,7 +139,7 @@ def notify_users_subs():
         d2 = user.purchase_date.date()
         days: int = (d1 - d2).days
 
-        if days < 2:
+        if days < 4:
             print('days remind:', days)
             email_list.append(user.user_id.email)
 
@@ -148,14 +148,21 @@ def notify_users_subs():
     print(len(email_list))
 
     if len(email_list) > 0:
-        send_mail_form(
-            'Напоминание об эвенте', 
-            f'Уважаемый подписчик, напоминаетм Вам, что завтра \
-                Ваша подписка закончится, не забудьте продлить её', 
-            [email_list]
-        )
+        try:
+            send_mail_form(
+                'Напоминание о подписке', 
+                f'Уважаемый подписчик, напоминаетм Вам, что завтра \
+                    Ваша подписка закончится, не забудьте продлить её', 
+                [email_list]
+            )
+        except:
+            print('Invalid address', email_list)
+            return {'email_list:': 'Invalid address'}
 
-    return {'email_list:': email_list}
+    if email_list.__len__() < 1:
+        return {'email_list:': 'Некого оповещать'}
+    else:
+        return {'email_list:': email_list}
     
 def get_active_events():    
     evs = Event.objects.filter(is_active=True)
@@ -179,7 +186,7 @@ def get_active_events():
 
         if d1 <= d2:
             email_list = []
-            response_data[i]['is_not_today'] = 'yes'
+            # response_data[i]['is_not_today'] = 'yes'
             event_members = EventMembers.objects.filter(event=ev.pk)
 
             for key, member in enumerate(event_members):
@@ -197,7 +204,7 @@ def get_active_events():
             )
 
         else:
-            response_data[i]['is_not_today'] = 'no'
+            # response_data[i]['is_not_today'] = 'no'
             Event.objects.filter(pk=ev.pk).update(is_active=False)
 
         response_data[i]['days'] = days.days
@@ -205,6 +212,14 @@ def get_active_events():
     # print('finish:', response_data)
 
     return json.dumps(response_data)
+
+def send_notification_sub(request):
+    response_data = notify_users_subs()
+    return HttpResponse(response_data, content_type="application/json")
+
+def send_notification_event(request):
+    response_data = get_active_events()
+    return HttpResponse(response_data, content_type="application/json")
 
 def get_url_response(request):
     # response_data = get_active_events()

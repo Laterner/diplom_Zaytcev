@@ -36,4 +36,7 @@ urlpatterns = [
     path('fake_pay/', views.fake_pay, name='vkr-fake_pay'),
 
     path('test_response/', views.get_url_response, name='test-url'),
+
+    path('send_notification_event', views.send_notification_event, name='send_notification_event'),
+    path('send_notification_sub/', views.send_notification_sub, name='send_notification_sub'),
 ]
