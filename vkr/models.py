@@ -11,11 +11,19 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    image = models.ImageField(default='event_default.png', upload_to='post_pics')
+
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
+    
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
+
+        img = Image.open(self.image.path)
+        img.save(self.image.path)
     
 class Event (models.Model):
     title = models.CharField(max_length=100)
@@ -35,8 +43,10 @@ class Event (models.Model):
     
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         super().save(force_insert, force_update, using, update_fields)
-
+        
         img = Image.open(self.image.path)
+        output_size = (300, 300)
+        img.thumbnail(output_size)
         img.save(self.image.path)
 
 class EventMembers(models.Model):

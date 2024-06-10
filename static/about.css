@@ -7,45 +7,40 @@
 }
 .palette{
     display: grid;
-    place-items: center;
-    grid-template-columns: repeat(5, 200px);
-    grid-template-rows: repeat(2, 200px);
-    margin: 50px 0;
-    column-gap: 27px;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-rows: repeat(auto-fill, 200px);
+    justify-content: center;
+    margin: 50px auto;
+    column-gap: 7%;
     row-gap: 27px;
     align-items: center;
+    background-color: white;
+    padding: 40px;
 }
-.palette div{
+.palette img {
+    width: 40px;
+    height: 40px;
+}
+.palette_item{
     background-color: white;
     width: 100%;
     height: 100%;
     border-radius: 15px;
     display: flex;
-    align-items: center
+    /* align-items: center */
 }
-.palette h2{
-    padding: 5px;
-    text-align: center;
-    color: white;
-    background-color: #3333335e;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    display: flex;
-    align-items: center
-}
-.palette p {
+.palette_item p{
+    margin-top: 7px;
     width: 100%;
     text-align: center;
-    font-size: x-large;
+    font-size: large;
 }
-.palette div:hover {
-    background-color: #333333;
-    color: white;
+.palette_item div {
+    width: 100%;
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
     .palette{
         display: none;
     }
-}
+} */
