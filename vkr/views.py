@@ -244,9 +244,6 @@ def send_notification_event(request):
     return HttpResponse(response_data, content_type="application/json")
 
 def get_url_response(request):
-    # response_data = get_active_events()
-    # response_data = 'get_active_events()'
-    # send_mail_form('subject', 'message',[settings.EMAIL_HOST_USER])
     response_data = notify_users_subs()
     return HttpResponse(response_data, content_type="application/json")
 

@@ -159,4 +159,8 @@ footer a:hover {
     width: 100%;
     font-size: 1.5rem;
   }
+  .navbar-nav{
+    height: 100%;
+    font-size: 25px;
+  }
 }
