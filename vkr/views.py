@@ -49,7 +49,7 @@ def create_event(request):
         if p_form.is_valid():
             p_form.save()
             # messages.success(request, f'Ваш профиль успешно обновлен.')
-            return redirect('events')
+            return redirect('vkr-events')
 
     else:
         p_form = EventUpdateForm() # instance=request.user.profile
@@ -71,7 +71,6 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         ]
 
     def form_valid(self, form):
-        # form.instance.author = self.request.user
         return super().form_valid(form)
     
 class PostListView(ListView):

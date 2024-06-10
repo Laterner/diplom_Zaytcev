@@ -9,8 +9,10 @@
         <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
         {% endcomment %}
         <h2 class="article-title">{{ object.title }}</h2>
-        <img style="max-width: 100%; border-radius: 10px; margin: 20px 0;" src="{% static 'images/bgw1.jpg' %}">
-        </div>
+        
+        <img style="max-width: 100%; border-radius: 10px; margin: 20px 0;" src="{{ event.image.url }}">
+
+      </div>
       <p class="article-content">{{ object.content }}</p>
       <p>Дата проведения мероприятия: {{ object.event_date }}</p>
       <p>Стоимость участия без подписки: {{ object.event_price }}</p>
@@ -19,9 +21,9 @@
       </button>
       {% if user.is_superuser %}
       <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Редактировать</a>
+        {% comment %} <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Редактировать</a> {% endcomment %}
         {% comment %} {% url 'event-update' object.id %} {% endcomment %}
-        <a class="btn btn-danger btn-sm mt-1 mb-1" href="#">Удалить</a> 
+        {% comment %} <a class="btn btn-danger btn-sm mt-1 mb-1" href="#">Удалить</a>  {% endcomment %}
         {% comment%} {% url 'event-delete' object.id %} {% endcomment %}
       </div>
       {% endif %}
