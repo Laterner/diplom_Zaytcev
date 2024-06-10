@@ -9,7 +9,8 @@
         <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
         {% endcomment %}
         <h2 class="article-title">{{ object.title }}</h2>
-      </div>
+        <img style="max-width: 100%; border-radius: 10px; margin: 20px 0;" src="{% static 'images/bgw1.jpg' %}">
+        </div>
       <p class="article-content">{{ object.content }}</p>
       <p>Дата проведения мероприятия: {{ object.event_date }}</p>
       <p>Стоимость участия без подписки: {{ object.event_price }}</p>

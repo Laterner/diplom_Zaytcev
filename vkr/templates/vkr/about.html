@@ -7,8 +7,44 @@
   {% progressive_web_app_meta %}
 </head>
 
+{% block welcome_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'welcome.css' %}">
+    <div class="welcome_page">
+        <img class="welcome_page_background" src={% static 'images/bgw1.jpg' %} />
+        <p class="noselect">#EventЧетверг</p>
+        <div class="bottom_button">
+            <a href="#content_section"><img class="welcome_page_arrow" src="{% static 'images/arrow.svg' %}" /></a>
+        </div>
+    </div>
+    
+    <script>
+        const smoothLinks = document.querySelectorAll('a[href^="#"]');
+        for (let smoothLink of smoothLinks) {
+            smoothLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = smoothLink.getAttribute('href');
+
+                document.querySelector(id).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        };
+
+        var lastScroll = screen.height - 10;
+        $(window).scroll(function(){
+            if($(window).scrollTop() < lastScroll){
+                alert("sdsd")
+            } else{
+                console.log(screen.height)
+            }
+        });
+
+    </script>
+{% endblock %}
+
 {% block content %}
-        
+    <div id="content_section"></div>
     <div class="content-section">
         <h1 class="title"><strong>О нашей организации</strong></h1>
         <link rel="stylesheet" type="text/css" href="{% static 'about.css' %}">

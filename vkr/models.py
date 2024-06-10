@@ -24,6 +24,8 @@ class Event (models.Model):
     event_date = models.DateTimeField(default=timezone.now)
     event_price = models.IntegerField(default=1000)
     
+    image = models.ImageField(upload_to='events', default='')
+    
     def __str__(self):
         return self.title
 

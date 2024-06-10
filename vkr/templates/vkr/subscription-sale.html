@@ -94,7 +94,7 @@
             var answer = httpGet('/active_sub/start/');
             
             if (~answer.indexOf('pay_page')){
-              document.getElementById('close_button').setAttribute( "onClick", "Redirect()" );
+              document.getElementById('close_button').setAttribute( "onClick", `Redirect(${id})` );
               document.getElementById('close_button').innerText = "Оплатить";
               document.getElementById('modal-text-insert').innerText = 'Перейдите на страницу оплаты';
             }
@@ -104,8 +104,8 @@
               document.getElementById('modal-text-insert').innerText = answer;
             }
         }
-        function Redirect(){
-          window.location.href = '/fake_pay'
+        function Redirect(id){
+          window.location.href = `/fake_pay?sub_type=${id}`
         }
     </script>
 {% endblock content %}

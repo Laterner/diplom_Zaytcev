@@ -286,14 +286,14 @@ def active_sub(request, sub_type):
     user_id = request.user.id
     username = request.user.username
     
-    if user_id == None or username == None:
-        return HttpResponse('incorrect user')
+    # if user_id == None or username == None:
+    #     return HttpResponse('incorrect user')
     
-    try:
-        if current_sub := UserSubscribe.objects.get(user_id=user_id):
-            return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until})')
-    except:
-        pass
+    # try:
+    #     if current_sub := UserSubscribe.objects.get(user_id=user_id):
+    #         return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until})')
+    # except:
+    #     pass
     
     return HttpResponse('pay_page')
 
@@ -321,24 +321,28 @@ def enjoy_event(request, event_id):
 def get_pay(request):
     pass
 
-def fake_pay(request, sub_type='middle'):
+def fake_pay(request, sub_type=None):
     sub_types = {
         'start':91,
         'middle':182,
         'pro':365,
     }
-
+    prices = {
+        'start':19_000,
+        'middle':30_000,
+        'pro':50_000,
+    }
     if sub_type == None:
-        return HttpResponse('incorrect request')
+        return HttpResponse('<h1>incorrect request</h1>')
     
     days = sub_types.get(sub_type)
     if days == None:
-        return HttpResponse('incorrect type')
-
+        return HttpResponse('<h1>incorrect type</h1>')
+    price = prices.get(sub_type)
     purchase_date = datetime.today()
     valid_until = datetime.today() + timedelta(days=days)
 
     user_sub = UserSubscribe(user_id=request.user, purchase_date=purchase_date, valid_until=valid_until)
     user_sub.save()
     # return HttpResponse(f'Оплата прошла успешно!')
-    return render(request, 'vkr/fake_pay.html') 
+    return render(request, 'vkr/fake_pay.html', {'price': price}) 
