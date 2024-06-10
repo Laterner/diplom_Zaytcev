@@ -20,7 +20,7 @@ from django.http import Http404
 
 import json
 
-from .forms import EventUpdateForm
+from .forms import EventUpdateForm, PostUpdateForm
 
 def home(request):
     context = {
@@ -45,6 +45,7 @@ def create_event(request):
     if request.method == 'POST':
         p_form = EventUpdateForm(request.POST,
                                    request.FILES,
+                                   instance=request.user.profile
                                    ) # instance=request.user.profile
         if p_form.is_valid():
             p_form.save()
@@ -52,13 +53,35 @@ def create_event(request):
             return redirect('vkr-events')
 
     else:
-        p_form = EventUpdateForm() # instance=request.user.profile
+        p_form = EventUpdateForm(instance=request.user.profile) # instance=request.user.profile
 
     context = {
         'form': p_form
     }
 
     return render(request, 'vkr/event_form.html', context)
+
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        p_form = PostUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile
+                                   ) # instance=request.user.profile
+        if p_form.is_valid():
+            p_form.save()
+            # messages.success(request, f'Ваш профиль успешно обновлен.')
+            return redirect('vkr-home')
+
+    else:
+        p_form = PostUpdateForm(instance=request.user.profile) # 
+
+    context = {
+        'form': p_form
+    }
+
+    return render(request, 'vkr/post_form.html', context)
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event

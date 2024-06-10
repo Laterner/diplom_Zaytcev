@@ -19,6 +19,7 @@ urlpatterns = [
     path('news/', PostListView.as_view(), name='vkr-home'),
     path('news/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('news/new/', PostCreateView.as_view(), name='post-create'),
+    # path('news/new/', views.create_post, name='post-create'),
     path('news/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('news/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
 
