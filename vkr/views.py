@@ -243,8 +243,7 @@ def get_active_events():
 
             send_mail_form(
                 'Напоминание об эвенте', 
-                f'Уважаемый подписчик, напоминаетм Вам, что через {days_remind_s} \
-                    дней пройдёт мероприятие[{ev.title}] на которое Вы зависались', 
+                f'Уважаемый подписчик, напоминаетм Вам, что через {days_remind_s} дней пройдёт мероприятие [{ev.title}] на которое Вы зависались', 
                 email_list
             )
 
@@ -371,10 +370,11 @@ def sub_pay(request, sub_type=None):
         'middle':30_000,
         'pro':50_000,
     }
+    
+    days = sub_types.get(sub_type)
     if sub_type == None:
         return HttpResponse('<h1>incorrect request</h1>')
     
-    days = sub_types.get(sub_type)
     if days == None:
         return HttpResponse('<h1>incorrect type</h1>')
     price = prices.get(sub_type)
