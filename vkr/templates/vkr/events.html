@@ -19,7 +19,7 @@
                 <h5>Цена без подписки: {{ event.event_price }}</h5>
                 <p class="article-content">{{ event.content }}</p>
                 {% comment %} TODO style {% endcomment %}
-                <button class="type_button" onclick="Send({{ event.id }})">Записаться</button>
+                {% comment %} <button class="type_button" onclick="Send({{ event.id }})">Записаться</button> {% endcomment %}
             </div>
         </article>
     {% endfor %}
@@ -41,9 +41,10 @@
             return xmlHttp.responseText;
         }
         function Pay(){
-            document.getElementById('modal-text-insert').innerText = "Успешно оплачено";
-            document.getElementById('pay_button').classList.add('hidden');
-            document.getElementById('close_button').classList.remove('hidden');
+            // document.getElementById('modal-text-insert').innerText = "Успешно оплачено";
+            // document.getElementById('pay_button').classList.add('hidden');
+            // document.getElementById('close_button').classList.remove('hidden');
+            window.location.href = `/sub_pay?sub_type=${id}`
         }
         function Close(){
             document.getElementById('modal-conteiner').classList.add('hidden');

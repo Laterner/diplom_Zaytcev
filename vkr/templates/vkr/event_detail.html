@@ -10,30 +10,22 @@
         {% endcomment %}
         <h2 class="article-title">{{ object.title }}</h2>
         
-        <img style="max-width: 100%; border-radius: 10px; margin: 20px 0;" src="{{ event.image.url }}">
+        <img style="width: 100%; border-radius: 10px; margin: 20px 0;" src="{{ event.image.url }}">
 
       </div>
       <p class="article-content">{{ object.content }}</p>
       <p>Дата проведения мероприятия: {{ object.event_date }}</p>
       <p>Стоимость участия без подписки: {{ object.event_price }}</p>
-      <button class="type_button" onclick="Send({{ event.id }})">
+      <button class="type_button" onclick="Send({{ event.id }}, {{ event.price }})">
         Записаться
       </button>
-      {% if user.is_superuser %}
-      <div>
-        {% comment %} <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Редактировать</a> {% endcomment %}
-        {% comment %} {% url 'event-update' object.id %} {% endcomment %}
-        {% comment %} <a class="btn btn-danger btn-sm mt-1 mb-1" href="#">Удалить</a>  {% endcomment %}
-        {% comment%} {% url 'event-delete' object.id %} {% endcomment %}
-      </div>
-      {% endif %}
     </div>
   </article>
 
   <div id="modal-conteiner" class="hidden">
     <div class="modal-content">
       <p id="modal-text-insert"></p>
-      <button onclick="Close()" class="close_button">Закрыть</button>
+      <button onclick="Close()" id="close_button" class="close_button">Закрыть</button>
     </div>
   </div>
 
@@ -50,12 +42,26 @@
         .getElementById("modal-conteiner")
         .classList.remove("modal-conteiner");
     }
-    function Send(id) {
+    function Send(id, price) {
       document.getElementById("modal-conteiner").classList.add("modal-conteiner");
       document.getElementById("modal-conteiner").classList.remove("hidden");
 
+      
       var answer = httpGet("/enjoy_event/" + id + "/");
-      document.getElementById("modal-text-insert").innerText = answer;
+
+      if (~answer.indexOf('pay_page')){
+        document.getElementById('close_button').setAttribute( "onClick", `Redirect()` );
+        document.getElementById('close_button').innerText = "Оплатить";
+        document.getElementById('modal-text-insert').innerText = 'Перейдите на страницу оплаты';
+      }
+      else{
+        document.getElementById('close_button').setAttribute( "onClick", "Close()" );
+        document.getElementById('close_button').innerText = "Закрыть";
+        document.getElementById('modal-text-insert').innerText = answer;
+      }
+    }
+    function Redirect(){
+      window.location.href = `/event_pay`
     }
   </script>
 {% endblock content %}

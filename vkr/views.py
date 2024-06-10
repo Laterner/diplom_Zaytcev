@@ -181,7 +181,7 @@ def notify_users_subs():
     email_list = []
 
     for user in users:
-        d2 = user.purchase_date.date()
+        d2 = user.valid_until.date()
         days: int = (d1 - d2).days
 
         if days < 4:
@@ -285,7 +285,7 @@ def admin_control(request):
 
 
 def view_all_subs(request):
-    subbers = UserSubscribe.objects.all().order_by('purchase_date')
+    subbers = UserSubscribe.objects.all().order_by('valid_until')
     event_pack = []
     
     for el in subbers:
@@ -349,21 +349,18 @@ def enjoy_event(request, event_id):
     if Event.objects.filter(id=event_id).exists():
         if EventMembers.objects.filter(event=event_id, user_prof_id=user_id).exists():
                 return HttpResponse('Вы уже записаны на данное мероприятие')
-        
-        em = EventMembers(event=event_id, user_prof_id=user_id)
-        em.save()
+        else:
+            em = EventMembers(event=event_id, user_prof_id=user_id)
+            em.save()
     else:
         return HttpResponse('Такого мероприятия нет')
 
     if not UserSubscribe.objects.filter(user_id=user_id).exists():
-        return HttpResponse('Вы успешно записались, необходимо оплатить вход')
+        return HttpResponse('pay_page') # Вы успешно записались, необходимо оплатить вход
     
     return HttpResponse('Вы успешно записались')
 
-def get_pay(request):
-    pass
-
-def fake_pay(request, sub_type=None):
+def sub_pay(request, sub_type=None):
     sub_types = {
         'start':91,
         'middle':182,
@@ -387,4 +384,7 @@ def fake_pay(request, sub_type=None):
     user_sub = UserSubscribe(user_id=request.user, purchase_date=purchase_date, valid_until=valid_until)
     user_sub.save()
     # return HttpResponse(f'Оплата прошла успешно!')
+    return render(request, 'vkr/fake_pay.html', {'price': price}) 
+
+def event_pay(request, price=None):
     return render(request, 'vkr/fake_pay.html', {'price': price}) 

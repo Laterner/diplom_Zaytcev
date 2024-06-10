@@ -18,10 +18,10 @@ class PostUpdateForm(forms.ModelForm):
         fields = ['title', 'content']
 
 class EventUpdateForm(forms.ModelForm):
-    title = forms.CharField(label="Название", required=False)
-    content = forms.CharField(label="Содержание", required=False)
+    title = forms.CharField(label="Название")
+    content = forms.CharField(label="Содержание")
     event_date = forms.DateTimeField(label="Дата проведения")
-    event_price = forms.CharField(label="Цена", required=False)
+    event_price = forms.CharField(label="Цена")
     image = forms.ImageField(label="Изображение", required=False)
 
     class Meta:

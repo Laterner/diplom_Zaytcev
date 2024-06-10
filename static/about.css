@@ -8,7 +8,7 @@
 .palette{
     display: grid;
     grid-template-columns: repeat(auto-fill, 200px);
-    grid-template-rows: repeat(auto-fill, 200px);
+    grid-template-rows: repeat(auto-fill, 80px);
     justify-content: center;
     margin: 50px auto;
     column-gap: 7%;
@@ -27,7 +27,6 @@
     height: 100%;
     border-radius: 15px;
     display: flex;
-    /* align-items: center */
 }
 .palette_item p{
     margin-top: 7px;
@@ -38,9 +37,3 @@
 .palette_item div {
     width: 100%;
 }
-
-/* @media (max-width: 480px) {
-    .palette{
-        display: none;
-    }
-} */
