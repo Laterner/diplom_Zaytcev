@@ -1,13 +1,33 @@
 {% extends "vkr/base.html" %}
 {% block content %}
+<style>
+    .media img {
+        margin: auto 0;
+        /* border: 1px solid black; */
+        border-radius: 100%;
+    }
+    .media-body {
+        margin-left: 30px;
+    }
+    .media .item {
+        width: 50%;
+    }
+    .sub-name {
+        /* text-align: center; */
+        font-size: 25px;
+    }
+</style>
     {% for sub in event_pack %}
         <article class="media content-section">
+            <img src={{sub.profile.profile.image.url}} width='100px' height='100px' alt='' />
             <div class="media-body">
-                <p>Имя подписчика: {{ sub.username }}</p>
-                <p class="text-muted">Дата покупки: {{ sub.purchase_date|date:"F d, Y" }}</p> 
-                <p class="text-muted">Действует до: {{ sub.valid_until|date:"F d, Y" }}</p>
-                <p>Обо мне: <br>{{sub.profile.profile.about_me}}</p>
-                <p>Кого я ищу: <br>{{sub.profile.profile.looking_for}}</p>
+                <p class="sub-name">{{ sub.username }}</p>
+                {% comment %} <p class="text-muted">Дата покупки: {{ sub.purchase_date|date:"F d, Y" }}</p> 
+                <p class="text-muted">Действует до: {{ sub.valid_until|date:"F d, Y" }}</p> {% endcomment %}
+                <div class="media">
+                    <p class="item"><b>Обо мне:</b> <br>{{sub.profile.profile.about_me}}</p>
+                    <p class="item"><b>Кого я ищу: </b><br>{{sub.profile.profile.looking_for}}</p>
+                </div>
             </div>
         </article>
     {% endfor %}

@@ -99,3 +99,12 @@ p {
 a {
   text-decoration: none;
 }
+
+@media (max-width: 480px) {
+  .content-section {
+    margin-top: 800px;
+  }
+  .content-section p {
+    margin: 0;
+  }
+}
