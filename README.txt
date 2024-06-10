@@ -1,4 +1,4 @@
 to build project
-docker build -t sait_zaytcev .
+docker build -t vkr .
 to run project
-docker run --name sait_zaytcev -d sait_zaytcev
+docker run -p 80:8000 vkr

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "pwa",
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -219,3 +220,7 @@ PWA_APP_SCREENSHOTS = [
 PWA_APP_DEBUG_MODE = True
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'ru_RU'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+X_FRAME_OPTIONS = 'SAMEORIGIN'

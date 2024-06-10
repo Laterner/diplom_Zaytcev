@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from PIL import Image
 
 
 class Post(models.Model):
@@ -32,6 +33,11 @@ class Event (models.Model):
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'pk': self.pk})
     
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
+
+        img = Image.open(self.image.path)
+        img.save(self.image.path)
 
 class EventMembers(models.Model):
     id = models.IntegerField(primary_key=True)

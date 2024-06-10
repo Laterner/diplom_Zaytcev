@@ -20,6 +20,7 @@ from django.http import Http404
 
 import json
 
+from .forms import EventUpdateForm
 
 def home(request):
     context = {
@@ -38,9 +39,31 @@ class EventListView(ListView):
 class EventDetailView(DetailView):
     model = Event
 
+
+@login_required
+def create_event(request):
+    if request.method == 'POST':
+        p_form = EventUpdateForm(request.POST,
+                                   request.FILES,
+                                   ) # instance=request.user.profile
+        if p_form.is_valid():
+            p_form.save()
+            # messages.success(request, f'Ваш профиль успешно обновлен.')
+            return redirect('events')
+
+    else:
+        p_form = EventUpdateForm() # instance=request.user.profile
+
+    context = {
+        'form': p_form
+    }
+
+    return render(request, 'vkr/event_form.html', context)
+
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
     fields = [
+        'image',
         'title', 
         'content', 
         'event_date', 
