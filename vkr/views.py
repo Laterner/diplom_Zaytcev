@@ -198,11 +198,12 @@ def notify_users_subs():
                 'Напоминание о подписке', 
                 f'Уважаемый подписчик, напоминаетм Вам, что завтра '
                 'Ваша подписка закончится, не забудьте продлить её', 
-                ['vany01@bk.ru']
+                email_list
             )
         except Exception as e:
             print('Invalid address', email_list)
             print('Exception:', e)
+            print('Needed: List[str]')
             return {'email_list:': 'Invalid address'}
 
     if email_list.__len__() < 1:
