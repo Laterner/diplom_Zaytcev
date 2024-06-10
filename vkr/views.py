@@ -333,14 +333,15 @@ def active_sub(request, sub_type):
     user_id = request.user.id
     username = request.user.username
     
-    # if user_id == None or username == None:
-    #     return HttpResponse('incorrect user')
+    if user_id == None or username == None:
+        return HttpResponse('incorrect user')
     
-    # try:
-    #     if current_sub := UserSubscribe.objects.get(user_id=user_id):
-    #         return HttpResponse(f'Уже куплен. Действует до ({current_sub.valid_until})')
-    # except:
-    #     pass
+    try:
+        # if EventMembers.objects.filter(event=event_id, user_prof_id=user_id).exists():
+        if UserSubscribe.objects.filter(user_id=user_id).exists():
+            return HttpResponse(f'Уже куплен.') # Действует до ({current_sub.valid_until})
+    except Exception as e:
+        print('Exception:', e)
     
     return HttpResponse('pay_page')
 
