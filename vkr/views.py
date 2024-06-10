@@ -226,16 +226,17 @@ def get_active_events():
         i = str(i)
         response_data[i] = {}
         response_data[i]['title'] = ev.title
-        response_data[i]['event_date'] = d2.__str__()
-        response_data[i]['today'] = d1.__str__()    
+        # response_data[i]['event_date'] = d2.__str__()
+        # response_data[i]['today'] = d1.__str__()    
 
         days = d1 - d2
-
+        print('days ====', days, d1, d2)
         if d1 <= d2:
             email_list = []
             # response_data[i]['is_not_today'] = 'yes'
             event_members = EventMembers.objects.filter(event=ev.pk)
 
+            print('=======',event_members)
             for key, member in enumerate(event_members):
                 print(member.user_prof.email)
                 email_list.append(member.user_prof.email)
@@ -249,10 +250,13 @@ def get_active_events():
                 f'дней пройдёт мероприятие [{ev.title}] на которое Вы зависались', 
                 email_list
             )
+            print('send')
+            response_data[i]['is_active'] = True
 
         else:
-            # response_data[i]['is_not_today'] = 'no'
-            Event.objects.filter(pk=ev.pk).update(is_active=False)
+            response_data[i]['is_active'] = False
+            # # response_data[i]['is_not_today'] = 'no'
+            # Event.objects.filter(pk=ev.pk).update(is_active=False)
 
         response_data[i]['days'] = days.days
         
@@ -291,12 +295,15 @@ def view_all_subs(request):
     event_pack = []
     
     for el in subbers:
-        event_pack.append({
+        try:
+          event_pack.append({
             'purchase_date': el.purchase_date,
             'username': el.user_id.username,
             'valid_until': el.valid_until, 
             'profile': el.user_id
             })
+        except:
+          print('An exception occurred')
         
     return render(request, 'vkr/subbers.html', {'event_pack': event_pack})
 
@@ -335,7 +342,7 @@ def active_sub(request, sub_type):
     username = request.user.username
     
     if user_id == None or username == None:
-        return HttpResponse('incorrect user')
+        return HttpResponse('Вы не зарегестрированы')
     
     try:
         # if EventMembers.objects.filter(event=event_id, user_prof_id=user_id).exists():
