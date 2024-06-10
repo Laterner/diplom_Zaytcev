@@ -304,10 +304,14 @@ def view_event_members(request):
     event_pack = {}
 
     for el in members:
-        event_pack[el.event] = {
+        try:
+          event_pack[el.event] = {
             'title': Event.objects.get(id=el.event).title, 
             'data': []
             }
+        except:
+          print('An exception occurred')
+        
     
     for el in members:
         try:
