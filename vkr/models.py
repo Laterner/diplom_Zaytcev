@@ -51,7 +51,7 @@ class Event (models.Model):
 
 class EventMembers(models.Model):
     id = models.IntegerField(primary_key=True)
-    event = models.IntegerField(default=1,blank=True, null=True)
+    event = models.IntegerField(default=1, blank=True, null=True)
     enjoy_date = models.DateTimeField(default=timezone.now)
     
     user_prof = models.ForeignKey(
